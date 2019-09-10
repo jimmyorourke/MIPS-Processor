@@ -1,0 +1,162 @@
+
+DemoDoom2015.elf:     file format elf32-tradbigmips
+
+
+Disassembly of section .text:
+
+80020000 <main>:
+80020000:	27bdffd0 	addiu	sp,sp,-48
+80020004:	afbf002c 	sw	ra,44(sp)
+80020008:	afbe0028 	sw	s8,40(sp)
+8002000c:	03a0f021 	move	s8,sp
+80020010:	24020005 	li	v0,5
+80020014:	afc2001c 	sw	v0,28(s8)
+80020018:	24020009 	li	v0,9
+8002001c:	afc20020 	sw	v0,32(s8)
+80020020:	a7c00010 	sh	zero,16(s8)
+80020024:	8fc20020 	lw	v0,32(s8)
+80020028:	00021080 	sll	v0,v0,0x2
+8002002c:	afc20020 	sw	v0,32(s8)
+80020030:	8fc2001c 	lw	v0,28(s8)
+80020034:	00021043 	sra	v0,v0,0x1
+80020038:	afc2001c 	sw	v0,28(s8)
+8002003c:	8fc2001c 	lw	v0,28(s8)
+80020040:	3043ffff 	andi	v1,v0,0xffff
+80020044:	8fc20020 	lw	v0,32(s8)
+80020048:	3042ffff 	andi	v0,v0,0xffff
+8002004c:	70621002 	mul	v0,v1,v0
+80020050:	3042ffff 	andi	v0,v0,0xffff
+80020054:	00021400 	sll	v0,v0,0x10
+80020058:	00021403 	sra	v0,v0,0x10
+8002005c:	304200ff 	andi	v0,v0,0xff
+80020060:	a7c20010 	sh	v0,16(s8)
+80020064:	27c2001c 	addiu	v0,s8,28
+80020068:	afc20014 	sw	v0,20(s8)
+8002006c:	27c20020 	addiu	v0,s8,32
+80020070:	afc20018 	sw	v0,24(s8)
+80020074:	8fc40014 	lw	a0,20(s8)
+80020078:	8fc50018 	lw	a1,24(s8)
+8002007c:	0c00804c 	jal	80020130 <swap>
+80020080:	00000000 	nop
+80020084:	8fc20014 	lw	v0,20(s8)
+80020088:	8c420000 	lw	v0,0(v0)
+8002008c:	afc2001c 	sw	v0,28(s8)
+80020090:	8fc20018 	lw	v0,24(s8)
+80020094:	8c420000 	lw	v0,0(v0)
+80020098:	afc20020 	sw	v0,32(s8)
+8002009c:	8fc40014 	lw	a0,20(s8)
+800200a0:	8fc50018 	lw	a1,24(s8)
+800200a4:	0c008034 	jal	800200d0 <crazyDiv>
+800200a8:	00000000 	nop
+800200ac:	8fc3001c 	lw	v1,28(s8)
+800200b0:	8fc20020 	lw	v0,32(s8)
+800200b4:	00621021 	addu	v0,v1,v0
+800200b8:	03c0e821 	move	sp,s8
+800200bc:	8fbf002c 	lw	ra,44(sp)
+800200c0:	8fbe0028 	lw	s8,40(sp)
+800200c4:	27bd0030 	addiu	sp,sp,48
+800200c8:	03e00008 	jr	ra
+800200cc:	00000000 	nop
+
+800200d0 <crazyDiv>:
+800200d0:	27bdfff8 	addiu	sp,sp,-8
+800200d4:	afbe0004 	sw	s8,4(sp)
+800200d8:	03a0f021 	move	s8,sp
+800200dc:	afc40008 	sw	a0,8(s8)
+800200e0:	afc5000c 	sw	a1,12(s8)
+800200e4:	8fc2000c 	lw	v0,12(s8)
+800200e8:	8c420000 	lw	v0,0(v0)
+800200ec:	1040000b 	beqz	v0,8002011c <crazyDiv+0x4c>
+800200f0:	00000000 	nop
+800200f4:	8fc20008 	lw	v0,8(s8)
+800200f8:	8c430000 	lw	v1,0(v0)
+800200fc:	8fc2000c 	lw	v0,12(s8)
+80020100:	8c420000 	lw	v0,0(v0)
+80020104:	0062001a 	div	zero,v1,v0
+80020108:	00001810 	mfhi	v1
+8002010c:	00001012 	mflo	v0
+80020110:	00401821 	move	v1,v0
+80020114:	8fc20008 	lw	v0,8(s8)
+80020118:	ac430000 	sw	v1,0(v0)
+8002011c:	03c0e821 	move	sp,s8
+80020120:	8fbe0004 	lw	s8,4(sp)
+80020124:	27bd0008 	addiu	sp,sp,8
+80020128:	03e00008 	jr	ra
+8002012c:	00000000 	nop
+
+80020130 <swap>:
+80020130:	27bdfff0 	addiu	sp,sp,-16
+80020134:	afbe000c 	sw	s8,12(sp)
+80020138:	03a0f021 	move	s8,sp
+8002013c:	afc40010 	sw	a0,16(s8)
+80020140:	afc50014 	sw	a1,20(s8)
+80020144:	8fc20010 	lw	v0,16(s8)
+80020148:	8c420000 	lw	v0,0(v0)
+8002014c:	afc20000 	sw	v0,0(s8)
+80020150:	8fc20014 	lw	v0,20(s8)
+80020154:	8c430000 	lw	v1,0(v0)
+80020158:	8fc20010 	lw	v0,16(s8)
+8002015c:	ac430000 	sw	v1,0(v0)
+80020160:	8fc20014 	lw	v0,20(s8)
+80020164:	8fc30000 	lw	v1,0(s8)
+80020168:	ac430000 	sw	v1,0(v0)
+8002016c:	03c0e821 	move	sp,s8
+80020170:	8fbe000c 	lw	s8,12(sp)
+80020174:	27bd0010 	addiu	sp,sp,16
+80020178:	03e00008 	jr	ra
+8002017c:	00000000 	nop
+
+Disassembly of section .reginfo:
+
+00000000 <.reginfo>:
+   0:	e000003c 	sc	zero,60(zero)
+	...
+
+Disassembly of section .pdr:
+
+00000000 <.pdr>:
+   0:	80020000 	lb	v0,0(zero)
+   4:	c0000000 	ll	zero,0(zero)
+   8:	fffffffc 	sdc3	$31,-4(ra)
+	...
+  14:	00000030 	tge	zero,zero
+  18:	0000001e 	0x1e
+  1c:	0000001f 	0x1f
+  20:	800200d0 	lb	v0,208(zero)
+  24:	40000000 	mfc0	zero,c0_index
+  28:	fffffffc 	sdc3	$31,-4(ra)
+	...
+  34:	00000008 	jr	zero
+  38:	0000001e 	0x1e
+  3c:	0000001f 	0x1f
+  40:	80020130 	lb	v0,304(zero)
+  44:	40000000 	mfc0	zero,c0_index
+  48:	fffffffc 	sdc3	$31,-4(ra)
+	...
+  54:	00000010 	mfhi	zero
+  58:	0000001e 	0x1e
+  5c:	0000001f 	0x1f
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	4743433a 	c1	0x143433a
+   4:	2028536f 	addi	t0,at,21359
+   8:	75726365 	jalx	5c98d94 <main-0x7a38726c>
+   c:	72792047 	0x72792047
+  10:	2b2b204c 	slti	t3,t9,8268
+  14:	69746520 	0x69746520
+  18:	32303131 	andi	s0,s1,0x3131
+  1c:	2e30332d 	sltiu	s0,s1,13101
+  20:	35322920 	ori	s2,t1,0x2920
+  24:	342e352e 	ori	t6,at,0x352e
+  28:	Address 0x0000000000000028 is out of bounds.
+
+
+Disassembly of section .gnu.attributes:
+
+00000000 <.gnu.attributes>:
+   0:	41000000 	bc0f	4 <main-0x8001fffc>
+   4:	0f676e75 	jal	d9db9d4 <main-0x7264462c>
+   8:	00010000 	sll	zero,at,0x0
+   c:	00070401 	0x70401
