@@ -1,14 +1,14 @@
 module memory_tb ();
 
-    reg         clock         ;
-    reg  [31:0] address       ;
-    reg  [31:0] data_in       ;
-    wire [31:0] data_out      ;
-    reg  [ 1:0] access_size   ;
+    reg         clock;
+    reg  [31:0] address;
+    reg  [31:0] data_in;
+    wire [31:0] data_out;
+    reg  [ 1:0] access_size;
     reg         read_not_write;
-    wire        busy          ;
-    reg         enable        ;
-    reg         rst           ;
+    wire        busy;
+    reg         enable;
+    reg         rst;
 
     localparam MEM_DEPTH = 44*4;
 
@@ -24,7 +24,7 @@ module memory_tb ();
         #5  clock =  ! clock;
 
     //populate the memory from SumArray.x
-    integer        i                           ;
+    integer        i;
     reg     [31:0] load_memory[0:(MEM_DEPTH/4)];
 
     localparam START_ADDRESS = 32'h80020000;

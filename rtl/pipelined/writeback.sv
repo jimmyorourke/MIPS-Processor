@@ -1,12 +1,12 @@
 module writeback (
-    input               clk            ,
+    input               clk,
     //contr0l bits 1n
-    input        [ 1:0] rw_d           ,
-    input        [31:0] alu_out        ,
-    input        [31:0] data_out       ,
-    input        [31:0] pc             ,
-    input        [31:0] insn           ,
-    input        [ 1:0] mem_read_size  ,
+    input        [ 1:0] rw_d,
+    input        [31:0] alu_out,
+    input        [31:0] data_out,
+    input        [31:0] pc,
+    input        [31:0] insn,
+    input        [ 1:0] mem_read_size,
     input               mem_sign_extend,
     //to the reg file
     output logic [31:0] rd_data

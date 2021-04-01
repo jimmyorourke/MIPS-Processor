@@ -1,7 +1,7 @@
 module fetch_decode_tb ();
 
-    reg clk   ;
-    reg rst   ;
+    reg clk;
+    reg rst;
     reg pc_rst;
 
 

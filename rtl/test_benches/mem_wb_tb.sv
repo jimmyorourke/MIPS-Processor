@@ -1,13 +1,13 @@
 module mem_wb_tb #(parameter X_FILE="SimpleAdd.x") ();
 
-    reg clk   ;
-    reg rst   ;
+    reg clk;
+    reg rst;
     reg pc_rst;
 
-    reg         stall    ;
-    reg  [ 2:0] counter  ;
+    reg         stall;
+    reg  [ 2:0] counter;
     wire        jbr_taken;
-    wire [31:0] next_pc  ;
+    wire [31:0] next_pc;
 
     //drive stall logic
     always @(posedge clk) begin

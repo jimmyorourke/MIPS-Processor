@@ -1,13 +1,13 @@
 module fetch #(X_FILE) (
-    input             clk     ,
-    output reg [31:0] pc_out  ,
-    input             stall   ,
-    input      [31:0] pc_in   ,
-    input             rst     ,
+    input             clk,
+    output reg [31:0] pc_out,
+    input             stall,
+    input      [31:0] pc_in,
+    input             rst,
     output     [31:0] insn_out
 );
 
-    wire       rw         ;
+    wire       rw;
     wire [1:0] access_size;
 
     assign rw          = 1'b1; //always a read for fetch stage

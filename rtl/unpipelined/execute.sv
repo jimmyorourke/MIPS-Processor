@@ -1,42 +1,42 @@
 module execute (
-    input             clk                ,
-    input      [31:0] insn               ,
-    input      [31:0] pc                 ,
+    input             clk,
+    input      [31:0] insn,
+    input      [31:0] pc,
     //from regfile
-    input      [31:0] rs_val             ,
-    input      [31:0] rt_val             ,
-    input      [15:0] imm16              ,
-    input      [25:0] imm26              ,
-    input      [ 4:0] sa                 ,
+    input      [31:0] rs_val,
+    input      [31:0] rt_val,
+    input      [15:0] imm16,
+    input      [25:0] imm26,
+    input      [ 4:0] sa,
     //c0ntro1 bits in
-    input             br                 ,
-    input      [ 1:0] jp                 ,
-    input             alu_in_b           ,
-    input             dm_we              ,
-    input             r_we               ,
-    input      [ 1:0] r_dst              ,
-    input      [ 1:0] rw_d               ,
-    input      [ 1:0] i_length           ,
-    input      [ 0:0] alu_op             ,
-    input             i_sign_extend      ,
-    input      [ 1:0] mem_read_size      ,
-    input             mem_sign_extend    ,
-    input      [ 1:0] hi_lo_out          ,
-    input             hi_in              ,
-    input             lo_in              ,
+    input             br,
+    input      [ 1:0] jp,
+    input             alu_in_b,
+    input             dm_we,
+    input             r_we,
+    input      [ 1:0] r_dst,
+    input      [ 1:0] rw_d,
+    input      [ 1:0] i_length,
+    input      [ 0:0] alu_op,
+    input             i_sign_extend,
+    input      [ 1:0] mem_read_size,
+    input             mem_sign_extend,
+    input      [ 1:0] hi_lo_out,
+    input             hi_in,
+    input             lo_in,
     //control bits out
-    output reg        dm_we_out          ,
-    output reg        r_we_out           ,
-    output reg [ 1:0] r_dst_out          ,
-    output reg [ 1:0] rw_d_out           ,
-    output reg [ 1:0] mem_read_size_out  ,
+    output reg        dm_we_out,
+    output reg        r_we_out,
+    output reg [ 1:0] r_dst_out,
+    output reg [ 1:0] rw_d_out,
+    output reg [ 1:0] mem_read_size_out,
     output reg        mem_sign_extend_out,
     //if branch or jump is taken and the target pc
-    output            jbr_valid          ,
-    output     [31:0] jbr_target         ,
-    output reg [31:0] pc_out             ,
-    output reg [31:0] insn_out           ,
-    output reg [31:0] alu_out_reg        , //pipeline reg
+    output            jbr_valid,
+    output     [31:0] jbr_target,
+    output reg [31:0] pc_out,
+    output reg [31:0] insn_out,
+    output reg [31:0] alu_out_reg, //pipeline reg
     output reg [31:0] rt_out
 );
     /* control bits reminder
@@ -120,7 +120,7 @@ module execute (
     end
 
     wire [63:0] mult_res;
-    wire [63:0] div_res ;
+    wire [63:0] div_res;
     assign mult_res = ($signed(rt_val)*$signed(rs_val));
     assign div_res  = ($signed(rt_val)/$signed(rs_val));
 
@@ -128,42 +128,42 @@ module execute (
     always_ff @(posedge clk)
         begin
             case(insn[31:26])
-                6'b000000 : begin
+                6'b000000: begin
                     case(insn[5:0])
 
-                        6'b010001 : begin
+                        6'b010001: begin
                             //$display("mthi r%d",insn[25:21]);
                             hi_reg <= rs_val;
                         end
-                        6'b010011 : begin
+                        6'b010011: begin
                             //$display("mtlo r%d",insn[25:21]);
                             lo_reg <= rs_val;
                         end
-                        6'b011000 : begin
+                        6'b011000: begin
                             //$display("mult r%d, r%d",insn[25:21],insn[20:16]);
                             hi_reg <= mult_res[63:32];
                             lo_reg <= mult_res[31:0];
                         end
-                        6'b011001 : begin
+                        6'b011001: begin
                             //$display("multu r%d, r%d",insn[25:21],insn[20:16]);
                             hi_reg <= mult_res[63:32];
                             lo_reg <= mult_res[31:0];
                         end
-                        6'b011010 : begin
+                        6'b011010: begin
                             //$display("div r%d, r%d",insn[25:21],insn[20:16]);
                             hi_reg <= div_res[63:32];
                             lo_reg <= div_res[31:0];
 
                         end
-                        6'b011011 : begin
+                        6'b011011: begin
                             //$display("divu r%d, r%d",insn[25:21],insn[20:16]);
                             hi_reg = div_res[63:32];
                             lo_reg = div_res[31:0];
                         end
-                        default : ;
+                        default:;
                     endcase
                 end
-                default : ;
+                default:;
             endcase
         end
 
@@ -177,241 +177,241 @@ module execute (
             end
             else begin
                 case(insn[31:26])
-                    6'b000000 : begin
+                    6'b000000: begin
                         case(insn[5:0])
-                            6'b000000 : begin
+                            6'b000000: begin
                                 //$display("sll r%d, r%d, %d",insn[15:11], insn[20:16], insn[10:6]);
                                 alu_out = rt_val<<current_immed;
                             end
-                            6'b000010 : begin //SRL rd, rt, sa
+                            6'b000010: begin //SRL rd, rt, sa
                                 //$display("srl r%d, r%d, %d", insn[15:11],insn[20:16],insn[10:6]);
                                 alu_out = rt_val >>current_immed;
 
                             end
-                            6'b000011 : begin //SRA rd, rt_val, sa
+                            6'b000011: begin //SRA rd, rt_val, sa
                                 //$display("sra r%d, r%d, %d",insn[15:11],insn[20:16], insn[10:6]);
                                 alu_out = rt_val>>>current_immed;
 
                             end
-                            6'b000100 : begin //SLLV rd, rt, rs
+                            6'b000100: begin //SLLV rd, rt, rs
                                 //$display("sllv r%d, r%d, r%d", insn[15:11], insn[20:16], insn[25:21] );
                                 alu_out = rt_val <<rs_val[4:0];
                             end
-                            6'b000110 : begin
+                            6'b000110: begin
                                 //$display("srlv r%d, r%d, r%d",insn[15:11],insn[20:16], insn[25:21]);
                                 alu_out = rt_val>>rs_val[4:0];
                             end
-                            6'b000111 : begin
+                            6'b000111: begin
                                 //$display("srav r%d, r%d, %d",insn[15:11],insn[20:16], insn[25:21]);
                                 alu_out = rt_val>>>rs_val[4:0];
                             end
-                            6'b001000 : begin
+                            6'b001000: begin
                                 //$display("jr r%d",insn[25:21]);
                             end
-                            6'b001001 : begin
+                            6'b001001: begin
                                 //$display("jalr r%d, r%d",insn[15:11],insn[25:21]);
                             end
-                            6'b010000 : begin
+                            6'b010000: begin
                                 //$display("mfhi r%d",insn[15:11]);
                                 alu_out = hi_reg;
                             end
-                            6'b010001 : begin
+                            6'b010001: begin
                                 //$display("mthi r%d",insn[25:21]);
                                 //hi_reg=rs_val;
                             end
-                            6'b010010 : begin
+                            6'b010010: begin
                                 //$display("mflo r%d",insn[15:11]);
                                 alu_out = lo_reg;
                             end
-                            6'b010011 : begin
+                            6'b010011: begin
                                 //$display("mtlo r%d",insn[25:21]);
                                 //lo_reg = rs_val;
                             end
-                            6'b011000 : begin
+                            6'b011000: begin
                                 //$display("mult r%d, r%d",insn[25:21],insn[20:16]);
                                 //hi_reg=($signed(rt_val)*$signed(rs_val))[63:32];
                                 //lo_reg=($signed(rt_val)*$signed(rs_val))[31:0];
                             end
-                            6'b011001 : begin
+                            6'b011001: begin
                                 //$display("multu r%d, r%d",insn[25:21],insn[20:16]);
                                 //hi_reg=($signed(rt_val)/$signed(rs_val))[63:32];
                                 //lo_reg=($signed(rt_val)/$signed(rs_val))[31:0];
                             end
-                            6'b011010 : begin
+                            6'b011010: begin
                                 //$display("div r%d, r%d",insn[25:21],insn[20:16]);
                                 //hi_reg=(rs_val/rt_val)[63:32];
                                 //lo_reg=(rs_val/rt_val)[31:0];
 
                             end
-                            6'b011011 : begin
+                            6'b011011: begin
                                 //$display("divu r%d, r%d",insn[25:21],insn[20:16]);
                                 //hi_reg=(rs_val/rt_val)[63:32];
                                 //lo_reg=(rs_val/rt_val)[31:0];
 
                             end
-                            6'b100000 : begin
+                            6'b100000: begin
                                 //$display("add r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = $signed(rs_val)+$signed(rt_val);
                             end
-                            6'b100001 : begin
+                            6'b100001: begin
                                 //$display("addu r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = rs_val+rt_val;
                             end
-                            6'b100010 : begin
+                            6'b100010: begin
                                 //$display("sub r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = rs_val-rt_val;
                             end
-                            6'b100011 : begin
+                            6'b100011: begin
                                 //$display("subu r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = rs_val-rt_val;
                             end
-                            6'b100100 : begin
+                            6'b100100: begin
                                 //$display("and r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = rs_val&rt_val;
                             end
-                            6'b100101 : begin
+                            6'b100101: begin
                                 //$display("or r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = rs_val|rt_val;
                             end
-                            6'b100110 : begin
+                            6'b100110: begin
                                 //$display("xor r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = rs_val^rt_val;
                             end
-                            6'b100111 : begin
+                            6'b100111: begin
                                 //$display("nor r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = ~(rs_val|rt_val);
                             end
-                            6'b101010 : begin
+                            6'b101010: begin
                                 //$display("slt r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = ($signed(rs_val)<$signed(rt_val));
                             end
-                            6'b101011 : begin
+                            6'b101011: begin
                                 //$display("sltu r%d, r%d, r%d",insn[15:11],insn[25:21], insn[20:16]);
                                 alu_out = ((rs_val)<(rt_val));
 
                             end
-                            default : begin
+                            default: begin
                                 //$display("not implemented");
                             end
 
                         endcase
                     end
-                    6'b000001 : begin
+                    6'b000001: begin
                         case(insn[20:16])
-                            5'b00000 : begin
+                            5'b00000: begin
                                 //$display("bltz r%d, %d",insn[25:21],insn[15:0]);
                                 br_taken = ($signed(rs_val)<0);
 
                             end
-                            5'b00001 : begin
+                            5'b00001: begin
                                 //$display("bgez r%d, %d",insn[25:21],insn[15:0]);
                                 br_taken = ($signed(rs_val)>=0);
 
                             end
-                            default : begin
+                            default: begin
                                 //$display("not implemented");
                             end
                         endcase
                     end
-                    6'b000010 : begin
+                    6'b000010: begin
                         //$display("j %d",{pc[31:28],insn[25:0],2'b00});
                     end
-                    6'b000011 : begin
+                    6'b000011: begin
                         //$display("jal %d",{pc[31:28],insn[25:0],2'b00});
                     end
-                    6'b000100 : begin
+                    6'b000100: begin
                         //$display("beq r%d, r%d, %d",insn[25:21],insn[20:16], insn[15:0]);
                         br_taken = (rs_val==rt_val);
 
                     end
-                    6'b000101 : begin
+                    6'b000101: begin
                         //$display("bne r%d, r%d, %d",insn[25:21],insn[20:16], insn[15:0]);
                         br_taken = (rs_val!=rt_val);
 
                     end
-                    6'b000110 : begin
+                    6'b000110: begin
                         //$display("blez r%d, %d",insn[25:21],insn[15:0]);
                         br_taken = ($signed(rs_val)<=0);
                     end
-                    6'b000111 : begin
+                    6'b000111: begin
                         //$display("bgtz r%d, %d",insn[25:21],insn[15:0]);
                         br_taken = ($signed(rs_val)>0);
 
 
                     end
-                    6'b001000 : begin
+                    6'b001000: begin
                         //$display("addi r%d, r%d, %d",insn[20:16],insn[25:21],insn[15:0]);
                         alu_out = $signed(rs_val)+$signed(current_immed);
                     end
-                    6'b001001 : begin //ADDIU rt_val, rs, immediate
+                    6'b001001: begin //ADDIU rt_val, rs, immediate
                         //$display("addiu r%d, r%d, %d",insn[20:16],insn[25:21],insn[15:0]);
                         alu_out = (rs_val)+(current_immed);
                     end
-                    6'b001010 : begin
+                    6'b001010: begin
                         //$display("slti r%d, r%d, %d",insn[20:16],insn[25:21],insn[15:0]);
                         alu_out = ($signed(rs_val)<$signed(current_immed));
                     end
-                    6'b001011 : begin
+                    6'b001011: begin
                         //$display("sltiu r%d, r%d, %d",insn[20:16],insn[25:21],insn[15:0]);
                         alu_out = ((rs_val)<(current_immed));
                     end
-                    6'b001100 : begin
+                    6'b001100: begin
                         //$display("andi r%d, r%d, %d",insn[20:16],insn[25:21],insn[15:0]);
                         alu_out = rs_val & current_immed;
                     end
-                    6'b001101 : begin
+                    6'b001101: begin
                         //$display("ori r%d, r%d, %d",insn[20:16],insn[25:21],insn[15:0]);
                         alu_out = rs_val | current_immed;
                     end
-                    6'b001110 : begin
+                    6'b001110: begin
                         //$display("xori r%d, r%d, %d",insn[20:16],insn[25:21],insn[15:0]);
                         alu_out = rs_val ^ current_immed;
                     end
-                    6'b001111 : begin
+                    6'b001111: begin
                         //$display("lui r%d, %d",insn[20:16],insn[15:0]);
                         alu_out = current_immed<<16;
                     end
-                    6'b011100 : begin
+                    6'b011100: begin
                         case(insn[5:0])
-                            6'b000010 : begin
+                            6'b000010: begin
                                 //$display("MUL r%d, r%d, r%d",insn[15:11], insn[25:21], insn[20:16]);
                                 alu_out = mult_res[31:0];
                             end
-                            default : $display("not implemented");
+                            default: $display("not implemented");
                         endcase
                     end
-                    6'b100000 : begin
+                    6'b100000: begin
                         //$display("lb r%d, %d(%d)",insn[20:16], insn[15:0],insn[25:21]);
                         alu_out = rs_val+$signed(current_immed);
 
                     end
-                    6'b100001 : begin
+                    6'b100001: begin
                         //$display("lh r%d, %d(%d)",insn[20:16], insn[15:0],insn[25:21]);
                         alu_out = rs_val+$signed(current_immed);
                     end
-                    6'b100011 : begin
+                    6'b100011: begin
                         //$display("lw r%d, %d(%d)",insn[20:16], insn[15:0],insn[25:21]);
                         alu_out = rs_val+$signed(current_immed);
                     end
-                    6'b100100 : begin
+                    6'b100100: begin
                         //$display("lbu r%d, %d(%d)",insn[20:16], insn[15:0],insn[25:21]);
                         alu_out = rs_val+$signed(current_immed);
                     end
-                    6'b100101 : begin
+                    6'b100101: begin
                         //$display("lhu r%d, %d(%d)",insn[20:16], insn[15:0],insn[25:21]);
                         alu_out = rs_val+$signed(current_immed);
                     end
-                    6'b101000 : begin
+                    6'b101000: begin
                         alu_out = rs_val+$signed(current_immed);
                     end
-                    6'b101001 : begin
+                    6'b101001: begin
                         alu_out = rs_val+$signed(current_immed);
                     end
-                    6'b101011 : begin
+                    6'b101011: begin
                         //$display("sw r%d, %d(%d)",insn[20:16], insn[15:0],insn[25:21]);
                         alu_out = rs_val+$signed(current_immed);
                     end
-                    default : $display("not implemented");
+                    default: $display("not implemented");
                 endcase
             end
         end
