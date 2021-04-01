@@ -2,17 +2,17 @@
 //This is the top level module connecting each of the pipeline stages and memory and regfile components
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 module proc_top #(X_FILE = "SimpleAdd.x") (
-    input         clk    ,
-    input         rst    , //for memory
+    input         clk,
+    input         rst, //for memory
     output [31:0] next_pc  //output to tb to know when to stop sim
 );
 
-    wire [31:0] pc_fd  ;
+    wire [31:0] pc_fd;
     wire [31:0] insn_fd;
 
-    wire [31:0] pc_in     ;
+    wire [31:0] pc_in;
     wire [31:0] jbr_target;
-    wire        jbr_valid ;
+    wire        jbr_valid;
     //this is what instruction to fetch next
     //on a branch fetch the branch target instead of pc+4
     assign pc_in = (jbr_valid) ? jbr_target : pc_fd;
@@ -20,7 +20,7 @@ module proc_top #(X_FILE = "SimpleAdd.x") (
     assign next_pc = pc_in;
 
     wire [4:0] rd_loc_dx;
-    wire [1:0] rw_d_dx  ;
+    wire [1:0] rw_d_dx;
 
     //load use stall logic
     //Need to stall when the instruction in decode is a load
@@ -45,28 +45,28 @@ module proc_top #(X_FILE = "SimpleAdd.x") (
 
 
     //c0ntro1 bits/pipeline reg connections between decode and execute stages
-    wire [ 4:0] rt         ;
-    wire [ 4:0] rs         ;
-    wire [15:0] imm16_dx   ;
-    wire [25:0] imm26_dx   ;
-    wire [ 4:0] sa_dx      ;
-    wire        br_dx      ;
-    wire [ 1:0] jp_dx      ;
+    wire [ 4:0] rt;
+    wire [ 4:0] rs;
+    wire [15:0] imm16_dx;
+    wire [25:0] imm26_dx;
+    wire [ 4:0] sa_dx;
+    wire        br_dx;
+    wire [ 1:0] jp_dx;
     wire        alu_in_b_dx;
-    wire        dm_we_dx   ;
-    wire        r_we_dx    ;
-    wire [ 1:0] r_dst_dx   ;
+    wire        dm_we_dx;
+    wire        r_we_dx;
+    wire [ 1:0] r_dst_dx;
 
-    wire [1:0] i_length_dx       ;
-    wire [0:0] alu_op_dx         ;
-    wire       i_sign_extend_dx  ;
-    wire [1:0] mem_read_size_dx  ;
+    wire [1:0] i_length_dx;
+    wire [0:0] alu_op_dx;
+    wire       i_sign_extend_dx;
+    wire [1:0] mem_read_size_dx;
     wire       mem_sign_extend_dx;
-    wire [1:0] hi_lo_out_dx      ;
-    wire       hi_in_dx          ;
-    wire       lo_in_dx          ;
+    wire [1:0] hi_lo_out_dx;
+    wire       hi_in_dx;
+    wire       lo_in_dx;
 
-    wire [31:0] pc_dx  ;
+    wire [31:0] pc_dx;
     wire [31:0] insn_dx;
 
     //decode
@@ -107,9 +107,9 @@ module proc_top #(X_FILE = "SimpleAdd.x") (
     wire [31:0] rt_dx;
 
     //from writeback to regfile
-    wire [31:0] rd_data  ;
+    wire [31:0] rd_data;
     wire [ 4:0] rd_loc_mw;
-    wire        r_we_mw  ;
+    wire        r_we_mw;
 
     //the regfile
     reg_file reg0phile (
@@ -129,18 +129,18 @@ module proc_top #(X_FILE = "SimpleAdd.x") (
 
 
     //c0ntro1 bits/pipeline reg connections between execute and memory stages
-    wire       dm_we_xm          ;
-    wire       r_we_xm           ;
-    wire [4:0] rd_loc_xm         ;
-    wire [1:0] rw_d_xm           ;
-    wire [1:0] mem_read_size_xm  ;
+    wire       dm_we_xm;
+    wire       r_we_xm;
+    wire [4:0] rd_loc_xm;
+    wire [1:0] rw_d_xm;
+    wire [1:0] mem_read_size_xm;
     wire       mem_sign_extend_xm;
-    wire [1:0] hi_lo_out_xm      ;
+    wire [1:0] hi_lo_out_xm;
 
-    wire [31:0] pc_xm     ;
-    wire [31:0] insn_xm   ;
+    wire [31:0] pc_xm;
+    wire [31:0] insn_xm;
     wire [31:0] alu_out_xm;
-    wire [31:0] rt_xm     ;
+    wire [31:0] rt_xm;
 
     //Bypassing
     //mx bypass:
@@ -211,13 +211,13 @@ module proc_top #(X_FILE = "SimpleAdd.x") (
     );
     //c0ntro1 bits/pipeline reg connections between memory and writeback stages
 
-    wire [1:0] mem_read_size_mw  ;
+    wire [1:0] mem_read_size_mw;
     wire       mem_sign_extend_mw;
 
-    wire [ 1:0] rw_d_mw    ;
-    wire [31:0] alu_out_mw ;
-    wire [31:0] pc_mw      ;
-    wire [31:0] insn_mw    ;
+    wire [ 1:0] rw_d_mw;
+    wire [31:0] alu_out_mw;
+    wire [31:0] pc_mw;
+    wire [31:0] insn_mw;
     wire [31:0] data_out_mw;
 
     //Bypassing

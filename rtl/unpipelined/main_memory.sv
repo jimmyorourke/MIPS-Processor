@@ -1,24 +1,24 @@
 module main_memory #(parameter MEM_DEPTH = 1048576) (
-    input             clk           ,
-    input      [31:0] address       ,
-    input      [31:0] data_in       ,
-    output reg [31:0] data_out      ,
-    input      [ 1:0] access_size   , //for reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
-    input      [ 1:0] store_size    , //for writes: 0=1 word, 1=1/2 word, 2=1 byte
+    input             clk,
+    input      [31:0] address,
+    input      [31:0] data_in,
+    output reg [31:0] data_out,
+    input      [ 1:0] access_size, //for reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
+    input      [ 1:0] store_size, //for writes: 0=1 word, 1=1/2 word, 2=1 byte
     input             read_not_write,
-    output reg        busy          ,
-    input             enable        ,
-    input             rst           ,
+    output reg        busy,
+    input             enable,
+    input             rst,
     input             stall
 );
 
     localparam BASE_ADDRESS                    = 32'h80020000;
-    reg [ 7:0] memory          [0:MEM_DEPTH-1]               ;
-    reg [31:0] local_address                                 ;
-    reg [ 3:0] counter                                       ;
-    reg        read_not_write_r                              ;
+    reg [ 7:0] memory          [0:MEM_DEPTH-1];
+    reg [31:0] local_address;
+    reg [ 3:0] counter;
+    reg        read_not_write_r;
 
-    integer        i                           ;
+    integer        i;
     reg     [31:0] load_memory[0:(MEM_DEPTH/4)];
     initial begin
 

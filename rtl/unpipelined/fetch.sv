@@ -1,14 +1,14 @@
 module fetch (
-    input             clk      ,
-    output reg [31:0] pc_out   ,
-    input             stall    ,
-    input      [31:0] pc_in    ,
-    input             rst      ,
-    output     [31:0] insn_out ,
+    input             clk,
+    output reg [31:0] pc_out,
+    input             stall,
+    input      [31:0] pc_in,
+    input             rst,
+    output     [31:0] insn_out,
     input             jbr_taken  //take out for pipelining
 );
 
-    wire       rw         ;
+    wire       rw;
     wire [1:0] access_size;
 
     assign rw          = 1'b1; //always a read for fetch stage
@@ -34,7 +34,7 @@ module fetch (
     //make jump take 3 cycles -take out for pipelining
     //flop the comb signals to keep for a cycle
     reg        jbr_reg;
-    reg [31:0] jbr_pc ;
+    reg [31:0] jbr_pc;
     always_ff @( posedge clk) begin
         jbr_reg <= jbr_taken;
         jbr_pc  <= pc_in;

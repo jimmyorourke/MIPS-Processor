@@ -1,28 +1,28 @@
 module mem_stage (
-    input             clk                ,
-    input      [31:0] address            ,
-    input      [31:0] data_in            ,
+    input             clk,
+    input      [31:0] address,
+    input      [31:0] data_in,
     output[31:0] data_out, //pipeline reg located in the mem module
-    input      [ 1:0] access_size        , //for burst reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
-    input      [ 1:0] store_size         , //for loads or stores: 0=1 word, 1=1/2 word, 2=1 byte --used for stores or loads
-    input             read_not_write     ,
-    input             enable             ,
-    input             rst                ,
-    input             mem_sign_extend    , //0 is dont sign extend value read from memory, 1 is
+    input      [ 1:0] access_size, //for burst reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
+    input      [ 1:0] store_size, //for loads or stores: 0=1 word, 1=1/2 word, 2=1 byte --used for stores or loads
+    input             read_not_write,
+    input             enable,
+    input             rst,
+    input             mem_sign_extend, //0 is dont sign extend value read from memory, 1 is
     //control bits in
-    input             r_we               , //writeback
-    input      [ 1:0] r_dst              , //destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
-    input      [ 1:0] rw_d               , //write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
-    input      [31:0] pc                 ,
-    input      [31:0] insn               ,
+    input             r_we, //writeback
+    input      [ 1:0] r_dst, //destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
+    input      [ 1:0] rw_d, //write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
+    input      [31:0] pc,
+    input      [31:0] insn,
     //control bits out
-    output reg        r_we_out           ,
-    output reg [ 1:0] r_dst_out          ,
-    output reg [ 1:0] rw_d_out           ,
-    output reg [31:0] alu_out_flop       , //pipeline register
-    output reg [31:0] pc_out             ,
-    output reg [31:0] insn_out           ,
-    output reg [ 1:0] mem_read_size_out  ,
+    output reg        r_we_out,
+    output reg [ 1:0] r_dst_out,
+    output reg [ 1:0] rw_d_out,
+    output reg [31:0] alu_out_flop, //pipeline register
+    output reg [31:0] pc_out,
+    output reg [31:0] insn_out,
+    output reg [ 1:0] mem_read_size_out,
     output reg        mem_sign_extend_out,
     output reg        shit                 //output regular
 );
