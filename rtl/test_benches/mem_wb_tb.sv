@@ -9,7 +9,7 @@ module mem_wb_tb #(parameter X_FILE="SimpleAdd.x") ();
     wire        jbr_taken;
     wire [31:0] next_pc;
 
-    //drive stall logic
+    // drive stall logic
     always @(posedge clk) begin
         if (next_pc == 32'h80088008) begin
             /*@(posedge clk);
@@ -17,7 +17,7 @@ module mem_wb_tb #(parameter X_FILE="SimpleAdd.x") ();
             @(posedge clk);
             @(posedge clk);
             @(posedge clk);*/
-            #20 //delay so that pipelined instructions can finish
+            #20 // delay so that pipelined instructions can finish
                 $stop;
         end
         /*if (rst) begin

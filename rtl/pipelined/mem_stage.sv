@@ -2,24 +2,24 @@ module mem_stage #(parameter X_FILE) (
     input             clk,
     input      [31:0] address,
     input      [31:0] data_in,
-    output     [31:0] data_out, //pipeline reg located in the mem module
-    input      [ 1:0] access_size, //for burst reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
-    input      [ 1:0] store_size, //for loads or stores: 0=1 word, 1=1/2 word, 2=1 byte --used for stores or loads
+    output     [31:0] data_out, // pipeline reg located in the mem module
+    input      [ 1:0] access_size, // for burst reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
+    input      [ 1:0] store_size, // for loads or stores: 0=1 word, 1=1/2 word, 2=1 byte --used for stores or loads
     input             read_not_write,
     input             enable,
     input             rst,
-    input             mem_sign_extend, //0 is dont sign extend value read from memory, 1 is
-    //control bits in
-    input             r_we, //writeback
-    input      [ 4:0] rd_loc, //holds the value --destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
-    input      [ 1:0] rw_d, //write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
+    input             mem_sign_extend, // 0 is dont sign extend value read from memory, 1 is
+    // control bits in
+    input             r_we, // writeback
+    input      [ 4:0] rd_loc, // holds the value --destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
+    input      [ 1:0] rw_d, // write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
     input      [31:0] pc,
     input      [31:0] insn,
-    //control bits out
+    // control bits out
     output reg        r_we_out,
     output reg [ 4:0] rd_loc_out,
     output reg [ 1:0] rw_d_out,
-    output reg [31:0] alu_out_flop, //pipeline register
+    output reg [31:0] alu_out_flop, // pipeline register
     output reg [31:0] pc_out,
     output reg [31:0] insn_out,
     output reg [ 1:0] mem_read_size_out,
@@ -27,22 +27,22 @@ module mem_stage #(parameter X_FILE) (
 );
 
     always_ff@(posedge clk)begin
-        alu_out_flop <= address; //for use when the alu output is not for memory, bypass mem
+        alu_out_flop <= address; // for use when the alu output is not for memory, bypass mem
     end
-    //flop the control bits
+    // flop the control bits
     always_ff@(posedge clk) begin
         r_we_out            <= r_we;
         rd_loc_out          <= rd_loc;
         rw_d_out            <= rw_d;
         pc_out              <= pc;
         insn_out            <= insn;
-        mem_read_size_out   <= store_size; //do the bit chopping in wb if it was a lb or lh
+        mem_read_size_out   <= store_size; // do the bit chopping in wb if it was a lb or lh
         mem_sign_extend_out <= mem_sign_extend;
     end
 
 
 
-    //data memory
+    // data memory
     main_memory #(
         2048,
         X_FILE

@@ -1,36 +1,36 @@
 module proc_top (
     input         clk,
-    input         rst, //for memory
-    input         pc_rst, //to reset pc to start address once memory is loaded
-    input         stall, //from tb
+    input         rst, // for memory
+    input         pc_rst, // to reset pc to start address once memory is loaded
+    input         stall, // from tb
     output        jbr_taken,
     output [31:0] next_pc
 );
 
     wire [31:0] pc_fd;
 
-    //wire stall;
+    // wire stall;
     wire [31:0] insn_fd;
 
 
-    //assign stall='0; //for now
+    // assign stall='0; // for now
 
     wire [31:0] pc_in;
     wire [31:0] jbr_target;
     wire        jbr_valid;
     assign pc_in = (jbr_valid) ? jbr_target : pc_fd;
-    //these go out to the tb
-    assign jbr_taken = jbr_valid; //take out for pipeline
+    // these go out to the tb
+    assign jbr_taken = jbr_valid; // take out for pipeline
     assign next_pc   = pc_in;
 
     fetch fetch0 (
         .clk      (clk      ),
         .pc_out   (pc_fd    ),
         .stall    (stall    ),
-        .pc_in    (pc_in    ), //for now just loop pc back in
+        .pc_in    (pc_in    ), // for now just loop pc back in
         .rst      (pc_rst   ),
         .insn_out (insn_fd  ),
-        .jbr_taken(jbr_valid)  //take out later for pipeline
+        .jbr_taken(jbr_valid)  // take out later for pipeline
     );
 
 
@@ -41,7 +41,7 @@ module proc_top (
     wire [25:0] imm26_dx;
     wire [ 4:0] sa_dx;
 
-    //c0ntro1 bits
+    // c0ntro1 bits
     wire       br_dx;
     wire [1:0] jp_dx;
     wire       alu_in_b_dx;
@@ -72,7 +72,7 @@ module proc_top (
         .imm26          (imm26_dx          ),
         .sa             (sa_dx             ),
 
-        //c0ntro1 bits -out
+        // c0ntro1 bits -out
         .br             (br_dx             ),
         .jp             (jp_dx             ),
         .alu_in_b       (alu_in_b_dx       ),
@@ -91,11 +91,11 @@ module proc_top (
         .pc_out         (pc_dx             ),
         .insn_out       (insn_dx           )
     );
-    //pipeline regs
+    // pipeline regs
     wire [31:0] rs_dx;
     wire [31:0] rt_dx;
 
-    //from writeback to regfile
+    // from writeback to regfile
     wire [31:0] rd_data;
     wire [ 4:0] rd;
     wire        r_we_mw;
@@ -112,7 +112,7 @@ module proc_top (
     );
 
 
-    //c0ntro1 bits
+    // c0ntro1 bits
     wire       dm_we_xm;
     wire       r_we_xm;
     wire [1:0] r_dst_xm;
@@ -130,7 +130,7 @@ module proc_top (
         .insn               (insn_dx           ),
         .pc                 (pc_dx             ),
 
-        //from regfile
+        // from regfile
         .rs_val             (rs_dx             ),
         .rt_val             (rt_dx             ),
 
@@ -138,7 +138,7 @@ module proc_top (
         .imm26              (imm26_dx          ),
         .sa                 (sa_dx             ),
 
-        //c0ntro1 bits in
+        // c0ntro1 bits in
         .br                 (br_dx             ),
         .jp                 (jp_dx             ),
         .alu_in_b           (alu_in_b_dx       ),
@@ -157,7 +157,7 @@ module proc_top (
 
 
 
-        //control bits out
+        // control bits out
         .dm_we_out          (dm_we_xm          ),
         .r_we_out           (r_we_xm           ),
         .r_dst_out          (r_dst_xm          ),
@@ -165,15 +165,15 @@ module proc_top (
         .mem_read_size_out  (mem_read_size_xm  ),
         .mem_sign_extend_out(mem_sign_extend_xm),
 
-        //if branch or jump is taken and the target pc
-        //comb outputs ->need to update pc into fetch
+        // if branch or jump is taken and the target pc
+        // comb outputs ->need to update pc into fetch
         .jbr_valid          (jbr_valid         ),
         .jbr_target         (jbr_target        ),
 
         .pc_out             (pc_xm             ),
         .insn_out           (insn_xm           ),
-        .alu_out_reg        (alu_out_xm        ), //pipeline reg
-        .rt_out             (rt_xm             )  //for mem data in
+        .alu_out_reg        (alu_out_xm        ), // pipeline reg
+        .rt_out             (rt_xm             )  // for mem data in
     );
 
     wire [1:0] mem_read_size_mw;
@@ -191,14 +191,14 @@ module proc_top (
         .address            (alu_out_xm        ),
         .data_in            (rt_xm             ),
         .data_out           (data_out_mw       ),
-        .access_size        ('0                ), //tie burst size to 1 word
+        .access_size        ('0                ), // tie burst size to 1 word
         .read_not_write     (~dm_we_xm         ),
-        .enable             ('1                ), //always enable this!!!11!!
+        .enable             ('1                ), // always enable this!!!11!!
         .rst                (rst               ),
 
-        .store_size         (mem_read_size_xm  ), //for stores or loads
+        .store_size         (mem_read_size_xm  ), // for stores or loads
         .mem_sign_extend    (mem_sign_extend_xm),
-        //more contr01 b1ts in
+        // more contr01 b1ts in
         .r_we               (r_we_xm           ),
         .r_dst              (r_dst_xm          ),
         .rw_d               (rw_d_xm           ),
@@ -206,7 +206,7 @@ module proc_top (
         .pc                 (pc_xm             ),
         .insn               (insn_xm           ),
 
-        //control bits out, pipelion regs
+        // control bits out, pipelion regs
         .r_we_out           (r_we_mw           ),
         .r_dst_out          (r_dst_mw          ),
         .rw_d_out           (rw_d_mw           ),
@@ -220,7 +220,7 @@ module proc_top (
 
     writeback wr1teback (
         .clk            (clk               ),
-        //control bits in
+        // control bits in
         //.r_we (r_we_mw), to reg file
         .r_dst          (r_dst_mw          ),
         .rw_d           (rw_d_mw           ),

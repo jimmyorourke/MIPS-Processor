@@ -10,15 +10,15 @@ module fetch #(X_FILE) (
     wire       rw;
     wire [1:0] access_size;
 
-    assign rw          = 1'b1; //always a read for fetch stage
-    assign access_size = 2'b0; //0 represents access size of 1 word (4 bytes)
+    assign rw          = 1'b1; // always a read for fetch stage
+    assign access_size = 2'b0; // 0 represents access size of 1 word (4 bytes)
 
     wire [31:0] fetch_pc;
 
     always_ff @(posedge clk)
         begin
             if (rst) begin
-                pc_out <= 32'h80020000; //prog start address
+                pc_out <= 32'h80020000; // prog start address
             end
             else begin
                 if(!stall) begin
@@ -28,7 +28,7 @@ module fetch #(X_FILE) (
         end
 
 
-    //instruction memory
+    // instruction memory
     main_memory #(
         2048,
         X_FILE
@@ -40,7 +40,7 @@ module fetch #(X_FILE) (
         .access_size   (access_size),
         .read_not_write(rw         ),
         .busy          (           ),
-        .enable        (~stall     ), //dont fetch next insn if stalling -nops will be inserted
+        .enable        (~stall     ), // dont fetch next insn if stalling -nops will be inserted
         .rst           (rst        ),
         .store_size    (2'b0       ),
         .stall         ('0         )

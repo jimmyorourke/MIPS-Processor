@@ -8,9 +8,9 @@ module reg_file (
     output reg [31:0] rs_out,
     output reg [31:0] rt_out
 );
-    reg [31:0] regophile[0:31]; //32 32-bit regs
+    reg [31:0] regophile[0:31]; // 32 32-bit regs
 
-    initial begin //initialise register values to their reg number
+    initial begin // initialise register values to their reg number
         /*integer i;
         for (i=0;i<32;i=i+1) begin
         regophile[i]=i;
@@ -21,7 +21,7 @@ module reg_file (
     end
 
     always @(posedge clk) begin
-        regophile[0] <= '0;//r0 always 0
+        regophile[0] <= '0;// r0 always 0
     end
     always @(posedge clk) begin
         $display("r%d: %d, r%d: %d", rs,regophile[rs],rt,regophile[rt] );

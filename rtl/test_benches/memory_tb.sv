@@ -23,7 +23,7 @@ module memory_tb ();
     always
         #5  clock =  ! clock;
 
-    //populate the memory from SumArray.x
+    // populate the memory from SumArray.x
     integer        i;
     reg     [31:0] load_memory[0:(MEM_DEPTH/4)];
 

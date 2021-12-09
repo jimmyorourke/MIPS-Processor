@@ -9,7 +9,7 @@ module mem_wb_tb ();
     wire        jbr_taken;
     wire [31:0] next_pc;
 
-    //drive stall logic
+    // drive stall logic
     always @(posedge clk) begin
         if (next_pc == 32'h80088008) begin
             $stop;

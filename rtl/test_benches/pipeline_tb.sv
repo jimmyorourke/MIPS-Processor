@@ -5,10 +5,10 @@ module pipeline_tb #(parameter X_FILE="SimpleAdd.x") ();
 
     wire [31:0] next_pc;
 
-    //when to stop the sim
+    // when to stop the sim
     always @(posedge clk) begin
         if (next_pc == 32'h80088008) begin
-            #20 //delay so that pipelined instructions can finish
+            #20 // delay so that pipelined instructions can finish
                 $stop;
         end
     end

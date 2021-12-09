@@ -3,8 +3,8 @@ module main_memory #(parameter MEM_DEPTH = 1048576) (
     input      [31:0] address,
     input      [31:0] data_in,
     output reg [31:0] data_out,
-    input      [ 1:0] access_size, //for reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
-    input      [ 1:0] store_size, //for writes: 0=1 word, 1=1/2 word, 2=1 byte
+    input      [ 1:0] access_size, // for reads: 0= 1 word, 1=4 words, 2=8words, 3=16 words
+    input      [ 1:0] store_size, // for writes: 0=1 word, 1=1/2 word, 2=1 byte
     input             read_not_write,
     output reg        busy,
     input             enable,
@@ -52,7 +52,7 @@ module main_memory #(parameter MEM_DEPTH = 1048576) (
                         else data_out<='0;
                     end
                     else if (!read_not_write) begin
-                        if (store_size=='0) begin //because of sw, sh, sb
+                        if (store_size=='0) begin // because of sw, sh, sb
                             memory[address-BASE_ADDRESS]   <= data_in[31:24];
                             memory[address-BASE_ADDRESS+1] <= data_in[23:16];
                             memory[address-BASE_ADDRESS+2] <= data_in[15:8];
@@ -67,9 +67,9 @@ module main_memory #(parameter MEM_DEPTH = 1048576) (
                         end
                     end
                     local_address    <= address + 4;
-                    busy             <= access_size > 0; //don't set if burst=1
+                    busy             <= access_size > 0; // don't set if burst=1
                     counter          <= (access_size==0) ? '0 : (1<<(access_size+1))-1;
-                    read_not_write_r <= read_not_write; //hold this signal
+                    read_not_write_r <= read_not_write; // hold this signal
                 end
 
                 else if (counter>0)begin

@@ -8,16 +8,16 @@ module reg_file (
     output reg [31:0] rs_out,
     output reg [31:0] rt_out
 );
-    reg [31:0] regophile[0:31]; //32 32-bit regs
+    reg [31:0] regophile[0:31]; // 32 32-bit regs
 
-    initial begin //initialise ra, sp, s8
+    initial begin // initialise ra, sp, s8
         regophile[31]= 32'h80088008;
         regophile[30]= 32'h12345;
         regophile[29]= 32'h80020800;
     end
 
     always @(posedge clk) begin
-        regophile[0] <= '0;//r0 always 0
+        regophile[0] <= '0;// r0 always 0
     end
     always @(posedge clk) begin
         $display("r%d: %d, r%d: %d", rs,regophile[rs],rt,regophile[rt] );
