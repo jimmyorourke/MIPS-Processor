@@ -49,7 +49,7 @@ module execute (
     i_length    // 0 is 16, 1 is 26, immed length, 2 for shift amount
     i_sign_extend  // 0 is dont sign extend the immediate, 1 is sign extend
     mem_read_size  // 0 is 32bit word, 1 is halfword, 2 is byte
-    mem_sign_extend<='1;// 0 is dont sign extend value read from memory, 1 is
+    mem_sign_extend<='1; // 0 is dont sign extend value read from memory, 1 is
     hi_lo_out  // 0<=whether to use alu output, 1 is use HI, 2 is LO
     hi_in  // 0 is hold value, 1 is load new value into HI
     lo_in // 0 is hold, 1 is load new value into Lo

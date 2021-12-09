@@ -18,11 +18,11 @@ module writeback (
     // have to remove bits from lb, lh, etc...
 
     /* control bits reminder
-    r_we<='0;       // writeback
-    r_dst <='0;         // destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
-    rw_d<='0;        // write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
+    r_we<='0; // writeback
+    r_dst <='0; // destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
+    rw_d<='0; // write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
     mem_read_size<='0; // 0 is 32bit word, 1 is halfword, 2 is byte
-    mem_sign_extend<='1;// 0 is dont sign extend value read from memory, 1 is
+    mem_sign_extend<='1; // 0 is dont sign extend value read from memory, 1 is
     */
     assign rd = (r_dst=='0) ? insn[20:16] :
         (r_dst==2'h1) ? insn[15:11] : 31;

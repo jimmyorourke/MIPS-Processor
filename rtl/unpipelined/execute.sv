@@ -40,21 +40,21 @@ module execute (
     output reg [31:0] rt_out
 );
     /* control bits reminder
-    br<='0;             // branch
-    jp<='0;         // jump 0 is no jump, 1 immediate (with shift), 2 is reg
-    alu_in_b<='0;    // taking immediate input -1 for immediate, 0 for reg
-    alu_op<='0;     // for the operation...need more bits?
-    dm_we <='0;         // memory write
-    r_we<='0;       // writeback
-    r_dst <='0;         // destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
-    rw_d<='0;        // write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
-    i_length<='0;   // 0 is 16, 1 is 26, immed length, 2 for shift amount
+    br<='0; // branch
+    jp<='0; // jump 0 is no jump, 1 immediate (with shift), 2 is reg
+    alu_in_b<='0; // taking immediate input -1 for immediate, 0 for reg
+    alu_op<='0; // for the operation...need more bits?
+    dm_we <='0; // memory write
+    r_we<='0; // writeback
+    r_dst <='0; // destination reg define 1 as rd, 0 as rt, 2 as r31 for link instr
+    rw_d<='0; // write back value from memory vs alu - 0 is computed, 1 is memory value, 2 is pc ( jalr link)
+    i_length<='0; // 0 is 16, 1 is 26, immed length, 2 for shift amount
     i_sign_extend<='1; // 0 is dont sign extend the immediate, 1 is sign extend
     mem_read_size<='0; // 0 is 32bit word, 1 is halfword, 2 is byte
-    mem_sign_extend<='1;// 0 is dont sign extend value read from memory, 1 is
-    hi_lo_out <='0;// 0<=whether to use alu output, 1 is use HI, 2 is LO
+    mem_sign_extend<='1; // 0 is dont sign extend value read from memory, 1 is
+    hi_lo_out <='0; // 0<=whether to use alu output, 1 is use HI, 2 is LO
     hi_in<='0; // 0 is hold value, 1 is load new value into HI
-    lo_in<='0;// 0 is hold, 1 is load new value into Lo
+    lo_in<='0; // 0 is hold, 1 is load new value into Lo
     */
 
     // flop control bits into pipeline reg for next stage

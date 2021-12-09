@@ -21,7 +21,7 @@ module reg_file (
     end
 
     always @(posedge clk) begin
-        regophile[0] <= '0;// r0 always 0
+        regophile[0] <= '0; // r0 always 0
     end
     always @(posedge clk) begin
         $display("r%d: %d, r%d: %d", rs,regophile[rs],rt,regophile[rt] );
